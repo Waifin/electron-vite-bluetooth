@@ -150,6 +150,26 @@ export class RendererBluetoothHelper {
     // ipcRenderer.send("cancel-bluetooth-request");
   }
 
+  /**  将字符串转换成ArrayBufer */
+  hex_To_arrayBuffer (str: string) {
+    let val = "";
+    if (!str) return;
+    let length = str.length;
+    let index = 0;
+    let array = [] as Array<string>;
+    while (index < length) {
+      array.push(str.substring(index, index + 2));
+      index = index + 2;
+    }
+    val = array.join(",");
+    // 将16进制转化为ArrayBuffer
+    return new Uint8Array(
+      (val.match(/[\da-f]{2}/gi) || []).map(function (h) {
+        return parseInt(h, 16);
+      })
+    ).buffer as ArrayBuffer;
+  }
+
   /**
    * 发送数据到BLE设备
    * @param hexString 16进制数据字符串
@@ -163,7 +183,7 @@ export class RendererBluetoothHelper {
       //   .map((byte) => byte.charCodeAt(0));
       await this.characteristicsForSend.writeValueWithoutResponse(
         // @ts-ignore
-        new Uint8Array(hexString)
+        this.hex_To_arrayBuffer(hexString)
         // new Uint8Array(bytes)
       );
       console.log("sendData finish");

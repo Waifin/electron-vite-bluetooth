@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "@flossom-npm/iot-translater": "1.0.2"
+
   },
   "devDependencies": {
     "@types/node": "^20.2.5",
